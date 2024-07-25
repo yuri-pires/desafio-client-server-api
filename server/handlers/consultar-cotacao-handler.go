@@ -10,15 +10,15 @@ import (
 func ConsultarCotacaoHandler(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 
-	resposta, erro := webservices.ConsultarCotacaoDolar()
-	if erro != nil {
+	resposta, err := webservices.ConsultarCotacaoDolar()
+	if err != nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
-		encoder.Encode(erro)
+		encoder.Encode(err)
 		return
 	}
 
-	//Set header devem vir antes do write??
+	//Set header deve vir antes do write??
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	encoder.Encode(resposta)

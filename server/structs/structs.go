@@ -10,12 +10,6 @@ type USDBRL struct {
 
 type MensagemDeErro struct {
 	Contexto string `json:"contexto"`
+	Erro     string `json:"erro"`
 	Tipo     string `json:"tipo"`
-}
-
-func CriarMensagemDeErro(contexto string, tipo string) *MensagemDeErro {
-	return &MensagemDeErro{
-		Contexto: contexto,
-		Tipo:     tipo,
-	}
 }
