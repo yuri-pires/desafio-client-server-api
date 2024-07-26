@@ -1,7 +1,9 @@
 package repository
 
 import (
+	"context"
 	"log"
+	"time"
 
 	"github.com/yuri-pires/desafio-client-server-api/server/structs"
 	"gorm.io/driver/sqlite"
@@ -34,12 +36,21 @@ func SalvarCotacao(bid string) *structs.MensagemDeErro {
 		return ErrInternalServerError
 	}
 
-	db.AutoMigrate(&structs.Bid{})
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	defer cancel()
+
+	// Sessão contínua para todas as operações usarem o mesmo Context
+	tx := db.WithContext(ctx)
+
+	if err := tx.AutoMigrate(&structs.Bid{}); err != nil {
+		log.Fatalf("Erro ao realizar AutoMigrate", err)
+		return ErrInternalServerError
+	}
 
 	bid_model := structs.Bid{Bid: bid}
 
-	result := db.Save(&bid_model)
-	if result.RowsAffected != 1 {
+	if err := tx.Save(&bid_model).Error; err != nil {
+		log.Fatalf(ERRO, err)
 		return ErrInternalServerError
 	}
 
