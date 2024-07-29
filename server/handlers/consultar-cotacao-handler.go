@@ -18,7 +18,6 @@ func ConsultarCotacaoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//Set header deve vir antes do write??
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	encoder.Encode(resposta)

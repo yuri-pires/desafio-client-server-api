@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
-	"os"
 	"time"
 
+	"github.com/yuri-pires/desafio-client-server-api/server/repository"
 	"github.com/yuri-pires/desafio-client-server-api/server/structs"
 )
 
@@ -33,6 +34,7 @@ func ConsultarCotacaoDolar() (*structs.AwesomeApiResponse, *structs.MensagemDeEr
 
 	response, err := http.DefaultClient.Do(request)
 	if err != nil {
+		log.Printf("Ocorreu um erro durante a requisição %v", err)
 		return nil, ErrInternalServerError
 	}
 	defer response.Body.Close()
@@ -48,6 +50,9 @@ func ConsultarCotacaoDolar() (*structs.AwesomeApiResponse, *structs.MensagemDeEr
 		return nil, ErrInternalServerError
 	}
 
-	io.Copy(os.Stdout, response.Body)
+	if cotacaoSalvaSemErro := repository.SalvarCotacao(awesomeApiResponse.USDBRL.Bid); cotacaoSalvaSemErro != nil {
+		return nil, ErrInternalServerError
+	}
+
 	return &awesomeApiResponse, nil
 }

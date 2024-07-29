@@ -43,14 +43,14 @@ func SalvarCotacao(bid string) *structs.MensagemDeErro {
 	tx := db.WithContext(ctx)
 
 	if err := tx.AutoMigrate(&structs.Bid{}); err != nil {
-		log.Fatalf("Erro ao realizar AutoMigrate", err)
+		log.Printf("Erro ao realizar AutoMigrate %v", err)
 		return ErrInternalServerError
 	}
 
 	bid_model := structs.Bid{Bid: bid}
 
 	if err := tx.Save(&bid_model).Error; err != nil {
-		log.Fatalf(ERRO, err)
+		log.Printf("Ocorreu um erro ao salvar o registro \n %v", err)
 		return ErrInternalServerError
 	}
 
