@@ -31,7 +31,7 @@ func main() {
 	var awesomeApiResponse structs.AwesomeApiResponse
 	responseBody, _ := io.ReadAll(res.Body)
 	if err = json.Unmarshal(responseBody, &awesomeApiResponse); err != nil {
-		log.Printf("Ocorreu um erro ao processar a resposta: %v", err)
+		log.Fatalf("Ocorreu um erro ao processar a resposta: %v", err)
 	}
 
 	fmt.Println(string(responseBody))
