@@ -50,7 +50,7 @@ func SalvarCotacao(bid string) *structs.MensagemDeErro {
 	bid_model := structs.Bid{Bid: bid}
 
 	if err := tx.Save(&bid_model).Error; err != nil {
-		log.Printf("Ocorreu um erro ao salvar o registro \n %v", err)
+		log.Printf("Ocorreu um erro ao salvar o registro %v \n", err)
 		return ErrInternalServerError
 	}
 
